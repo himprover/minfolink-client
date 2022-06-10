@@ -1,0 +1,16 @@
+{
+  "extends": ["./node_modules/gts/", "plugin:react/recommended"],
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "prettier/prettier": ["error", {"endOfLine": "auto"}]
+  },
+  "env": {
+    "browser": true,
+    "jest": true
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
+}
