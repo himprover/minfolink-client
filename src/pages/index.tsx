@@ -11,7 +11,7 @@ const Home: NextPage = () => {
       <button type="button" onClick={() => signOut()}>
         SignOut
       </button>
-      <h1>{data}</h1>
+      <h1>{data?.user?.name}</h1>
       <h3>{status}</h3>
     </div>
   );

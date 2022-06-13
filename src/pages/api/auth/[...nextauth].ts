@@ -4,8 +4,8 @@ import FacebookProvider from 'next-auth/providers/facebook';
 export default NextAuth({
   providers: [
     FacebookProvider({
-      clientId: process.env.FACEBOOK_APP_ID as string,
-      clientSecret: process.env.FACEBOOK_APP_SECRET_ID as string,
+      clientId: process.env.FACEBOOK_TEST_APP_ID as string,
+      clientSecret: process.env.FACEBOOK_TEST_APP_SECRET_ID as string,
     }),
   ],
 });
