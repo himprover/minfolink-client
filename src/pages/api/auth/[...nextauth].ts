@@ -1,5 +1,22 @@
+import type {DefaultSession, DefaultUser} from 'next-auth';
+import type {DefaultJWT} from 'next-auth/jwt';
+
 import NextAuth from 'next-auth/next';
 import FacebookProvider from 'next-auth/providers/facebook';
+
+// 필요한 type 추가 선언
+declare module 'next-auth' {
+  export interface Session extends Record<string, unknown>, DefaultSession {
+    user?: DefaultUser;
+    accessToken?: string;
+  }
+}
+declare module 'next-auth/jwt' {
+  export interface JWT extends Record<string, unknown>, DefaultJWT {
+    userId: string;
+    accessToken?: string;
+  }
+}
 
 const providers = [
   FacebookProvider({
@@ -12,15 +29,18 @@ export default NextAuth({
   providers: providers,
   callbacks: {
     async jwt({token, account}) {
-      // Persist the OAuth access_token to the token right after signin
       if (account) {
         token.accessToken = account.access_token;
+        token.userId = account.providerAccountId;
+        console.log(token);
       }
       return token;
     },
-    async session({session, token, user}) {
-      // Send properties to the client, like an access_token from a provider.
+    async session({session, token}) {
       session.accessToken = token.accessToken;
+      if (session.user) {
+        session.user.id = token.userId;
+      }
       return session;
     },
   },
