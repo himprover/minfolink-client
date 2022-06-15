@@ -18,7 +18,7 @@ declare module 'next-auth/jwt' {
   }
 }
 
-const providers = [
+const PROVIDERS = [
   FacebookProvider({
     clientId: process.env.FACEBOOK_TEST_APP_ID as string,
     clientSecret: process.env.FACEBOOK_TEST_APP_SECRET_ID as string,
@@ -26,13 +26,12 @@ const providers = [
 ];
 
 export default NextAuth({
-  providers: providers,
+  providers: PROVIDERS,
   callbacks: {
     async jwt({token, account}) {
       if (account) {
         token.accessToken = account.access_token;
         token.userId = account.providerAccountId;
-        console.log(token);
       }
       return token;
     },
