@@ -1,7 +1,6 @@
 import {Session} from 'next-auth';
 import {signIn, signOut} from 'next-auth/react';
-import Link from 'next/link';
-import * as S from './style';
+import * as S from './styles';
 
 interface HeaderProps {
   session: Session | null;
