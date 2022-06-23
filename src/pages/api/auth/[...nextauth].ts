@@ -43,15 +43,11 @@ export default NextAuth({
         const serverToken = await postSignIn({
           accessToken: account.access_token,
         });
-
-        // 토큰 못받아오면(로그인실패)
-        if (serverToken === null) {
-          return false;
+        if (serverToken) {
+          account.serverToken = serverToken;
+          return true;
         }
-
-        // 토큰 받아왔으면(로그인성공) 토큰 저장
-        account.serverToken = serverToken;
-        return true;
+        return false;
       }
       return false;
     },
@@ -71,6 +67,9 @@ export default NextAuth({
       }
       return session;
     },
+  },
+  pages: {
+    error: '/auth/error',
   },
   secret: process.env.NEXT_AUTH_SECRET,
 });
