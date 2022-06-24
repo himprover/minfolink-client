@@ -1,9 +1,9 @@
 import {defaultInstance} from 'core/utils/axios';
 
-interface PostSignInRequestProps {
+export interface PostSignInRequestProps {
   accessToken: string;
 }
-interface PostSignInResponseProps {
+export interface PostSignInResponseProps {
   accessToken: string;
   refreshToken: string;
 }
@@ -18,24 +18,3 @@ export const postSignIn = async ({
   const {data} = await defaultInstance.post(url, body);
   return data;
 };
-
-// export const postSignIn = async ({
-//   accessToken,
-// }: PostSignInRequestProps): Promise<PostSignInResponseProps> => {
-//   const url = '/auth/signin';
-//   const body = {accessToken: accessToken};
-//   try {
-//     const {data} = await defaultInstance.post(url, body);
-//     return data;
-//   } catch (error: unknown) {
-//     const {response} = error as AxiosError;
-
-//     if (response!.status === 401) {
-//       throw new UnAuthorizedError();
-//     } else if (response!.status === 403) {
-//       throw new ForbiddenError();
-//     } else {
-//       throw new UnknownError();
-//     }
-//   }
-// };

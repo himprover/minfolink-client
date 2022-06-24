@@ -21,7 +21,14 @@ export const Header = ({session}: HeaderProps) => {
                 로그아웃
               </button>
             ) : (
-              <button type="button" onClick={() => signIn('facebook')}>
+              <button
+                type="button"
+                onClick={() =>
+                  signIn('facebook', {
+                    callbackUrl: 'http://localhost:3000/auth/signin',
+                  })
+                }
+              >
                 로그인/회원가입
               </button>
             )}
