@@ -7,7 +7,6 @@ interface HeaderProps {
 }
 
 export const Header = ({session}: HeaderProps) => {
-  console.log(session);
   return (
     <S.Wrap>
       <S.Nav>

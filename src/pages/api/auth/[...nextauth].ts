@@ -1,4 +1,6 @@
+import {AxiosError} from 'axios';
 import {postSignIn} from 'core/apis/auth';
+import {ApiError} from 'core/apis/error';
 import type {DefaultAccount, DefaultSession, DefaultUser} from 'next-auth';
 import type {DefaultJWT} from 'next-auth/jwt';
 
@@ -38,22 +40,31 @@ export default NextAuth({
   providers: PROVIDERS,
   callbacks: {
     async signIn({account}) {
-      if (account && account.access_token) {
-        // accessToken, refreshToken 받아옴
-        const serverToken = await postSignIn({
-          accessToken: account.access_token,
-        });
-        if (serverToken) {
-          account.serverToken = serverToken;
-          return true;
+      try {
+        if (account && account.access_token) {
+          // accessToken, refreshToken 받아옴
+          const serverToken = await postSignIn({
+            accessToken: account.access_token,
+          });
+          if (serverToken) {
+            account.serverToken = serverToken;
+            return true;
+          }
+          return false;
         }
         return false;
+      } catch (error) {
+        if ((error as AxiosError).response?.status === 401) {
+          return '/auth/error?type=UnAuthorized';
+        } else if ((error as AxiosError).response?.status === 403) {
+          return `/auth/error?type=Forbidden&accessToken=${account.access_token}`;
+        } else {
+          return '/auth/error?type=Unknown';
+        }
       }
-      return false;
     },
     async jwt({token, account}) {
       if (account) {
-        token.userId = account.providerAccountId;
         token.accessToken = account.serverToken.accessToken;
         token.refreshToken = account.serverToken.refreshToken;
       }
@@ -61,15 +72,11 @@ export default NextAuth({
     },
     async session({session, token}) {
       if (session.user) {
-        session.user.id = token.userId;
         session.accessToken = token.accessToken;
         session.refreshToken = token.refreshToken;
       }
       return session;
     },
-  },
-  pages: {
-    error: '/auth/error',
   },
   secret: process.env.NEXT_AUTH_SECRET,
 });

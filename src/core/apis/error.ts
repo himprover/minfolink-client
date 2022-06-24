@@ -11,5 +11,5 @@ export class UnknownError extends ApiError {
   message = 'UnknownError';
   alertTitle = '처리 오류';
   alertText =
-    '일시적인 문제가 발생했습니다. 지속된다면 고객센터에 문의해주세요.';
+    '일시적인 문제가 발생했습니다.<br />지속된다면 고객센터에 문의해주세요.';
 }

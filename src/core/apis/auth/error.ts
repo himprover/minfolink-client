@@ -14,5 +14,7 @@ export class ForbiddenError extends ApiError {
   code = 403;
   name = 'ForbiddenError';
   message = 'ForbiddenError';
-  redirectUrl = '/signup';
+  redirectUrl = '/auth/signup';
+  alertTitle = '회원정보없음';
+  alertText = '가입되지 않은 회원입니다.<br />회원가입 페이지로 이동합니다.';
 }
