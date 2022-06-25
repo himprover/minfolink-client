@@ -1,6 +1,6 @@
 import {Session} from 'next-auth';
 import {signIn, signOut} from 'next-auth/react';
-import * as S from './styles';
+import styled from 'styled-components';
 
 interface HeaderProps {
   session: Session | null;
@@ -8,14 +8,14 @@ interface HeaderProps {
 
 export const Header = ({session}: HeaderProps) => {
   return (
-    <S.Wrap>
-      <S.Nav>
-        <S.NavItemContainer>
-          <S.NavItem>로고</S.NavItem>
-          <S.NavItem>피드</S.NavItem>
-        </S.NavItemContainer>
-        <S.NavItemContainer>
-          <S.NavItem>
+    <Wrap>
+      <Nav>
+        <NavItemContainer>
+          <NavItem>로고</NavItem>
+          <NavItem>피드</NavItem>
+        </NavItemContainer>
+        <NavItemContainer>
+          <NavItem>
             {session ? (
               <button type="button" onClick={() => signOut()}>
                 로그아웃
@@ -32,9 +32,14 @@ export const Header = ({session}: HeaderProps) => {
                 로그인/회원가입
               </button>
             )}
-          </S.NavItem>
-        </S.NavItemContainer>
-      </S.Nav>
-    </S.Wrap>
+          </NavItem>
+        </NavItemContainer>
+      </Nav>
+    </Wrap>
   );
 };
+
+const Wrap = styled.section``;
+const Nav = styled.nav``;
+const NavItemContainer = styled.ul``;
+const NavItem = styled.li``;
