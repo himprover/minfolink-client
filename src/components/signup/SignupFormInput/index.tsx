@@ -3,10 +3,12 @@ import {Alert} from 'components/common/Alert';
 import {
   useCheckboxHandlerWithRecoilImmer,
   useInputHandlerWithRecoilImmer,
+  useSetterWithRecoilImmer,
 } from 'core/hooks/recoil';
 import {defaultInstance} from 'core/utils/axios';
 import {useSession} from 'next-auth/react';
 import {useRouter} from 'next/router';
+import {useEffect} from 'react';
 import {useRecoilState} from 'recoil';
 import {SignupState, SignupStateProps} from 'recoil/signup';
 import styled from 'styled-components';
@@ -16,7 +18,7 @@ export const SignupFormInput = () => {
   const session = useSession();
 
   const router = useRouter();
-
+  const accessTokenHandler = useSetterWithRecoilImmer(setSignup, 'accessToken');
   const linkHandler = useInputHandlerWithRecoilImmer(setSignup, 'link');
   const termsHandler = useCheckboxHandlerWithRecoilImmer(setSignup, 'terms');
   const privacyHandler = useCheckboxHandlerWithRecoilImmer(
@@ -27,11 +29,17 @@ export const SignupFormInput = () => {
     setSignup,
     'marketing'
   );
+
+  useEffect(() => {
+    accessTokenHandler(session.data?.accessToken);
+  }, [session]);
+
   const signupHandler = async () => {
     if (signup.accessToken === '') {
       Alert.fire('세션 만료', '다시 시도해주세요.', 'error').then(() =>
         router.push('/')
       );
+      return;
     }
 
     const url = '/auth/signup';
@@ -44,7 +52,6 @@ export const SignupFormInput = () => {
       );
     } catch (error) {
       const status = (error as AxiosError).response!.status;
-      console.log(status);
       switch (status) {
         case 400:
           Alert.fire(
