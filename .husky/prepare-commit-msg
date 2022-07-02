@@ -4,7 +4,7 @@ if [ -z "$BRANCHES_TO_SKIP" ]; then
   BRANCHES_TO_SKIP=(main develop release hotfix)
 fi
 
-PROJECT_ID=PROJECT_ID
+PROJECT_ID=MINFOLINK
 BRANCH_NAME=$(git symbolic-ref --short HEAD)
 BRANCH_NAME="${BRANCH_NAME##*/}"
 JIRA_ID=`echo $BRANCH_NAME | egrep -o "$PROJECT_ID-[0-9]+"`
