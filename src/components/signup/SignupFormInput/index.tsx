@@ -5,7 +5,7 @@ import {
   useInputHandlerWithRecoilImmer,
   useSetterWithRecoilImmer,
 } from 'core/hooks/recoil';
-import {defaultInstance} from 'core/utils/axios';
+import {authInstance} from 'core/utils/axios';
 import {useSession} from 'next-auth/react';
 import {useRouter} from 'next/router';
 import {useEffect} from 'react';
@@ -46,7 +46,7 @@ export const SignupFormInput = () => {
     const body = {...signup};
 
     try {
-      await defaultInstance.post(url, body);
+      await authInstance.post(url, body);
       Alert.fire('회원가입완료', '환영합니다.', 'success').then(() =>
         router.push('/')
       );
