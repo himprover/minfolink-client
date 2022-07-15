@@ -1,4 +1,4 @@
-import {defaultInstance} from 'core/utils/axios';
+import {authInstance} from 'core/utils/axios';
 
 export interface PostSignInRequestProps {
   accessToken: string;
@@ -15,6 +15,6 @@ export const postSignIn = async ({
 }: PostSignInRequestProps): Promise<PostSignInResponseProps> => {
   const url = '/auth/signin';
   const body = {accessToken: accessToken};
-  const {data} = await defaultInstance.post(url, body);
+  const {data} = await authInstance.post(url, body);
   return data;
 };
