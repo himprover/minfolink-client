@@ -1,12 +1,35 @@
-import {Session} from 'next-auth';
+import {deleteSignOut} from 'core/apis/auth';
+import {getUser} from 'core/apis/user';
 import {signIn, signOut} from 'next-auth/react';
+import {useRouter} from 'next/router';
+import {useEffect} from 'react';
+import cookie from 'react-cookies';
+import {useQuery} from 'react-query';
 import styled from 'styled-components';
 
-interface HeaderProps {
-  session: Session | null;
-}
+export type UserProps = {
+  id: string;
+  email: string;
+  link: string;
+  nickname: string;
+  profile_image: string;
+  refresh_token: string;
+  is_enabled: boolean;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+  terms: boolean;
+  privacy: boolean;
+  marketing: boolean;
+};
 
-export const Header = ({session}: HeaderProps) => {
+export const Header = () => {
+  const router = useRouter();
+  const user = useQuery('user', getUser, {retry: 0});
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
+
   return (
     <Wrap>
       <Nav>
@@ -16,11 +39,7 @@ export const Header = ({session}: HeaderProps) => {
         </NavItemContainer>
         <NavItemContainer>
           <NavItem>
-            {session ? (
-              <button type="button" onClick={() => signOut()}>
-                로그아웃
-              </button>
-            ) : (
+            {user.isError || user.isLoading ? (
               <button
                 type="button"
                 onClick={() =>
@@ -30,6 +49,17 @@ export const Header = ({session}: HeaderProps) => {
                 }
               >
                 로그인/회원가입
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => {
+                  cookie.save('accessToken', '', {path: '/', maxAge: 0});
+                  cookie.save('refreshToken', '', {path: '/', maxAge: -0});
+                  window.location.assign('/');
+                }}
+              >
+                로그아웃
               </button>
             )}
           </NavItem>

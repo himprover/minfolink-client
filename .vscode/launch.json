@@ -5,11 +5,10 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "pwa-node",
+      "command": "npm run dev",
+      "name": "Run npm start",
       "request": "launch",
-      "name": "Launch Program",
-      "skipFiles": ["<node_internals>/**"],
-      "program": "${file}"
+      "type": "node-terminal"
     }
   ]
 }

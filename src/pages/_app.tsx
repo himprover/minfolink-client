@@ -5,30 +5,35 @@ import {GlobalStyle} from 'styles/global-styles';
 import {lightTheme} from 'styles/theme';
 import App from 'next/app';
 import {Header} from 'components/base/Header';
-import {Session} from 'next-auth';
 import {RecoilRoot} from 'recoil';
+import {useState} from 'react';
+import {Hydrate, QueryClient, QueryClientProvider} from 'react-query';
+import cookies from 'next-cookies';
+import {authInstance} from 'core/utils/axios';
 
-interface CustomAppProps extends AppProps {
-  session: Session | null;
-}
-
-function MyApp({Component, pageProps, session}: CustomAppProps) {
+function MyApp({Component, pageProps}: AppProps) {
+  const [queryClient] = useState(() => new QueryClient());
   return (
-    <RecoilRoot>
-      <SessionProvider session={pageProps.session}>
-        <ThemeProvider theme={lightTheme}>
-          <GlobalStyle />
-          <Header session={session} />
-          <Component {...pageProps} />
-        </ThemeProvider>
-      </SessionProvider>
-    </RecoilRoot>
+    <QueryClientProvider client={queryClient}>
+      <Hydrate state={pageProps.dehydratedState}>
+        <RecoilRoot>
+          <SessionProvider session={pageProps.session}>
+            <ThemeProvider theme={lightTheme}>
+              <GlobalStyle />
+              <Header />
+              <Component {...pageProps} />
+            </ThemeProvider>
+          </SessionProvider>
+        </RecoilRoot>
+      </Hydrate>
+    </QueryClientProvider>
   );
 }
 
 MyApp.getInitialProps = async (appContext: AppContext) => {
   const session = await getSession(appContext.ctx);
   const appProps = await App.getInitialProps(appContext);
+
   return {...appProps, session: session};
 };
 
