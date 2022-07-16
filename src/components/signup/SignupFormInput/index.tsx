@@ -19,7 +19,6 @@ export const SignupFormInput = () => {
 
   const router = useRouter();
   const accessTokenHandler = useSetterWithRecoilImmer(setSignup, 'accessToken');
-  const linkHandler = useInputHandlerWithRecoilImmer(setSignup, 'link');
   const termsHandler = useCheckboxHandlerWithRecoilImmer(setSignup, 'terms');
   const privacyHandler = useCheckboxHandlerWithRecoilImmer(
     setSignup,
@@ -81,20 +80,9 @@ export const SignupFormInput = () => {
       }
     }
   };
+
   return (
     <FormContainer>
-      <FormItem>
-        이메일
-        <input type="text" value={session.data!.user!.email!} readOnly />
-      </FormItem>
-      <FormItem>
-        닉네임
-        <input type="text" value={session.data!.user!.name!} readOnly />
-      </FormItem>
-      <FormItem>
-        링크
-        <input type="text" value={signup.link} onChange={linkHandler} />
-      </FormItem>
       <FormItem>
         이용약관동의
         <input type="checkbox" checked={signup.terms} onChange={termsHandler} />

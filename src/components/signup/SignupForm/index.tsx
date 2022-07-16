@@ -1,15 +1,11 @@
 import styled from 'styled-components';
 import {SignupFormInput} from '../SignupFormInput';
-import {SignupFormPreview} from '../SignupFormPreview';
 
 export const SignupForm = () => {
   return (
     <Wrap>
       <Row>
         <Title>회원가입</Title>
-      </Row>
-      <Row>
-        <SignupFormPreview />
       </Row>
       <Row>
         <SignupFormInput />
