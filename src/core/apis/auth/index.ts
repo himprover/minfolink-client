@@ -18,3 +18,9 @@ export const postSignIn = async ({
   const {data} = await authInstance.post(url, body);
   return data;
 };
+
+export const deleteSignOut = async () => {
+  const url = '/auth/signout';
+  const {data} = await authInstance.delete(url);
+  return data;
+};

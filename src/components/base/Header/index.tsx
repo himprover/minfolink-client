@@ -1,5 +1,7 @@
+import {deleteSignOut} from 'core/apis/auth';
 import {getUser} from 'core/apis/user';
 import {signIn, signOut} from 'next-auth/react';
+import {useRouter} from 'next/router';
 import {useEffect} from 'react';
 import cookie from 'react-cookies';
 import {useQuery} from 'react-query';
@@ -22,6 +24,7 @@ export type UserProps = {
 };
 
 export const Header = () => {
+  const router = useRouter();
   const user = useQuery('user', getUser, {retry: 0});
   useEffect(() => {
     console.log(user);
@@ -51,9 +54,9 @@ export const Header = () => {
               <button
                 type="button"
                 onClick={() => {
-                  signOut();
-                  cookie.remove('accessToken');
-                  cookie.remove('refreshToken');
+                  cookie.save('accessToken', '', {path: '/', maxAge: 0});
+                  cookie.save('refreshToken', '', {path: '/', maxAge: -0});
+                  window.location.assign('/');
                 }}
               >
                 로그아웃
